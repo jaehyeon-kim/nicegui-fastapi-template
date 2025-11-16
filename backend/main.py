@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.endpoints import login, users, items
 from backend.db import init_db
-# from ui import ui_init
+from frontend import init_frontend
 
 
 @asynccontextmanager
@@ -34,4 +34,4 @@ app.include_router(users.router, prefix="/api/v1", tags=["users"])
 app.include_router(items.router, prefix="/api/v1", tags=["items"])
 
 # Mount NiceGUI
-# ui_init(app)
+init_frontend(app)

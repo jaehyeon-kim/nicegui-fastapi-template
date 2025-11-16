@@ -13,7 +13,9 @@ def create_user(
     *,
     db: Session = Depends(deps.get_db),
     user_in: models.UserCreate,
-    current_user: models.User = Depends(deps.get_current_active_superuser),
+    _current_user: models.User = Depends(
+        deps.get_current_active_superuser
+    ),  # 403 if not superuser
 ) -> Any:
     user = user_repo.get_by_email(db, email=user_in.email)
     if user:

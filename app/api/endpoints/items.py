@@ -1,5 +1,5 @@
 from typing import Any, List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 from app import models
 from app.api import deps
@@ -27,5 +27,22 @@ def create_item(
     item_in: models.ItemCreate,
     current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
-    item = item_repo.create_with_owner(db=db, obj_in=item_in, owner_id=current_user.id)
-    return item
+    existing_item = item_repo.get_by_title_and_owner(
+        db=db, title=item_in.title, owner_id=current_user.id
+    )
+    if existing_item:
+        raise HTTPException(
+            status_code=409,
+            detail="An item with this title already exists.",
+        )
+
+    try:
+        item = item_repo.create_with_owner(
+            db=db, obj_in=item_in, owner_id=current_user.id
+        )
+        return item
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred while creating the item.",
+        )

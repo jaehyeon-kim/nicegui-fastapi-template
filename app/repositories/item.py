@@ -1,8 +1,16 @@
+from typing import Optional
 from sqlmodel import Session, select
 from app.models.models import Item, ItemCreate
 
 
 class ItemRepository:
+    def get_by_title_and_owner(
+        self, db: Session, *, title: str, owner_id: int
+    ) -> Optional[Item]:
+        return db.exec(
+            select(Item).where(Item.title == title, Item.owner_id == owner_id)
+        ).first()
+
     def create_with_owner(
         self, db: Session, *, obj_in: ItemCreate, owner_id: int
     ) -> Item:

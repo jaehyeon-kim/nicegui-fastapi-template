@@ -1,8 +1,8 @@
 from sqlmodel import Session, SQLModel
-from app.core.config import settings
-from app.repositories.user import user_repo
-from app.models import models
-from app.db.session import engine
+from backend.core.config import settings
+from backend.repositories.user import user_repo
+from backend.models import models
+from backend.db.session import engine
 
 
 def init() -> None:

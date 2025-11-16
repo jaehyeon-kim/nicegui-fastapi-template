@@ -2,9 +2,9 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
-from app.core import security
-from app.repositories.user import user_repo
-from app.db.session import get_db
+from backend.core import security
+from backend.repositories.user import user_repo
+from backend.db.session import get_db
 
 router = APIRouter()
 

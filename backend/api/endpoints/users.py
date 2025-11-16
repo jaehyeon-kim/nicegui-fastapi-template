@@ -1,9 +1,9 @@
 from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
-from app import models
-from app.api import deps
-from app.repositories.user import user_repo
+from backend import models
+from backend.api import deps
+from backend.repositories.user import user_repo
 
 router = APIRouter()
 

@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlmodel import Session, select
-from app.core.security import get_password_hash, verify_password
-from app.models.models import User, UserCreate
+from backend.core.security import get_password_hash, verify_password
+from backend.models.models import User, UserCreate
 
 
 class UserRepository:

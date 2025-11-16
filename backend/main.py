@@ -2,13 +2,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.endpoints import login, users, items
-from app.db import init_db
+from backend.api.endpoints import login, users, items
+from backend.db import init_db
 # from ui import ui_init
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(backend: FastAPI):
     print("INFO:     Initializing database...")
     init_db.init()
     print("INFO:     Database initialization complete.")

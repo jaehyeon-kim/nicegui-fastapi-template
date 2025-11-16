@@ -1,6 +1,6 @@
 from typing import Optional
 from sqlmodel import Session, select
-from app.models.models import Item, ItemCreate
+from backend.models.models import Item, ItemCreate
 
 
 class ItemRepository:

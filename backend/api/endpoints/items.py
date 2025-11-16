@@ -1,9 +1,9 @@
 from typing import Any, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
-from app import models
-from app.api import deps
-from app.repositories.item import item_repo
+from backend import models
+from backend.api import deps
+from backend.repositories.item import item_repo
 
 router = APIRouter()
 

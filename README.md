@@ -86,16 +86,23 @@ Follow these instructions to get the project running on your local machine.
 
 Once the server is running, you can access the following URLs:
 
-- **Application Frontend**: [http://localhost:8000](http://localhost:8000)
+**Application Frontend**: [http://localhost:8000](http://localhost:8000)
 
-  - The main user interface built with NiceGUI.
+- The main user interface built with NiceGUI.
 
-- **API Docs (Swagger UI)**: [http://localhost:8000/docs](http://localhost:8000/docs)
+![](./images/demo.gif)
 
-  - Interact with and test the API endpoints directly from your browser.
+**API Docs (Swagger UI)**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-- **Alternate API Docs (ReDoc)**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
-  - View a clean and concise API documentation.
+- Interact with and test the API endpoints directly from your browser.
+
+![](./images/docs.png)
+
+**Alternate API Docs (ReDoc)**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+
+- View a clean and concise API documentation.
+
+![](./images/redoc.png)
 
 ## Stopping and Cleaning Up
 

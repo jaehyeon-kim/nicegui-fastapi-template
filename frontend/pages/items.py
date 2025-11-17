@@ -10,7 +10,7 @@ def items_page():
     """Defines the page for displaying and creating user items."""
     with dashboard_frame(title="My Items"):
         items_grid = ui.grid().classes(
-            "w-full gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+            "w-full gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         )
 
         with ui.dialog() as dialog, ui.card().classes("min-w-[600px]"):
@@ -51,9 +51,10 @@ async def load_items(grid: ui.grid):
                         with ui.column().classes("p-4 w-full"):
                             ui.label(item["title"]).classes("text-xl font-semibold")
                             ui.separator().classes("w-full my-1")
-                            ui.label(item["description"]).classes("text-sm")
+                            ui.label(item["description"]).classes(
+                                "text-sm line-clamp-3"
+                            )
 
-                            # --- Action Buttons ---
                             with ui.row().classes("w-full justify-end mt-4 gap-2"):
                                 # Modify Button - opens its own dialog
                                 with (
@@ -90,7 +91,7 @@ async def load_items(grid: ui.grid):
                                         ui.button(
                                             "Cancel",
                                             on_click=confirm_dialog.close,
-                                            color="gray",
+                                            color="gray-100",
                                         )
                                         # The lambda captures the specific item_id for the handler
                                         ui.button(

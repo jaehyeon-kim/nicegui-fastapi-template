@@ -20,7 +20,7 @@ def dashboard_frame(title: str):
         app.storage.user.clear()
         ui.navigate.to("/login")
 
-    with ui.header(elevated=True).classes("items-center justify-between"):
+    with ui.header(elevated=True).classes("items-center justify-between bg-slate-700"):
         with ui.row().classes("items-center"):
             ui.button(on_click=lambda: left_drawer.toggle(), icon="menu").props(
                 "flat color=white"
@@ -38,7 +38,7 @@ def dashboard_frame(title: str):
                     with ui.item_section().props("avatar"):
                         ui.icon("list", color="gray-500")
                     with ui.item_section():
-                        ui.label("Items").classes("text-gray-700")
+                        ui.label("Items").classes("text-gray-700 text-bold text-xl")
 
                 if app.storage.user.get("is_superuser"):
                     with (
@@ -49,7 +49,9 @@ def dashboard_frame(title: str):
                         with ui.item_section().props("avatar"):
                             ui.icon("person_add", color="gray-500")
                         with ui.item_section():
-                            ui.label("Create User").classes("text-gray-700")
+                            ui.label("Create User").classes(
+                                "text-gray-700 text-bold text-xl"
+                            )
 
             with ui.list().classes("w-full"):
                 ui.separator().classes("my-2")
@@ -59,7 +61,12 @@ def dashboard_frame(title: str):
                     with ui.item_section().props("avatar"):
                         ui.icon("logout", color="gray-500")
                     with ui.item_section():
-                        ui.label("Logout").classes("text-gray-700")
+                        ui.label("Logout").classes("text-gray-700 text-bold text-xl")
 
     with ui.column().classes("w-full p-4 md:p-8 items-center"):
         yield
+
+    with ui.footer(elevated=True).classes(
+        "bg-slate-700 text-white items-center justify-center p-4"
+    ):
+        ui.label("© 2025 MyApp Name. All rights reserved.")

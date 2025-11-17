@@ -20,7 +20,7 @@ def read_items(
     return items
 
 
-@router.post("/items/", response_model=models.ItemRead)
+@router.post("/item/", response_model=models.ItemRead)
 def create_item(
     *,
     db: Session = Depends(deps.get_db),
@@ -41,8 +41,49 @@ def create_item(
             db=db, obj_in=item_in, owner_id=current_user.id
         )
         return item
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=500,
             detail="An unexpected error occurred while creating the item.",
         )
+
+
+@router.put("/item/{item_id}", response_model=models.ItemRead)
+def update_item(
+    *,
+    db: Session = Depends(deps.get_db),
+    item_id: int,
+    item_in: models.ItemUpdate,
+    current_user: models.User = Depends(deps.get_current_user),
+) -> Any:
+    """
+    Update an item.
+    """
+    item = item_repo.get(db=db, id=item_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    if not current_user.is_superuser and (item.owner_id != current_user.id):
+        raise HTTPException(status_code=403, detail="Not enough permissions")
+
+    item = item_repo.update(db=db, db_obj=item, obj_in=item_in)
+    return item
+
+
+@router.delete("/item/{item_id}", response_model=models.ItemRead)
+def delete_item(
+    *,
+    db: Session = Depends(deps.get_db),
+    item_id: int,
+    current_user: models.User = Depends(deps.get_current_user),
+) -> Any:
+    """
+    Delete an item.
+    """
+    item = item_repo.get(db=db, id=item_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    if not current_user.is_superuser and (item.owner_id != current_user.id):
+        raise HTTPException(status_code=403, detail="Not enough permissions")
+
+    item = item_repo.remove(db=db, id=item_id)
+    return item

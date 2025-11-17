@@ -8,7 +8,7 @@ from backend.repositories.user import user_repo
 router = APIRouter()
 
 
-@router.post("/users/", response_model=models.UserRead)
+@router.post("/user/", response_model=models.UserRead)
 def create_user(
     *,
     db: Session = Depends(deps.get_db),

@@ -7,7 +7,7 @@ from frontend import state
 
 @ui.page("/items")
 def items_page():
-    with dashboard_frame(title="My Items"):
+    with dashboard_frame(title="Dashboard"):
         items_grid = ui.grid(columns=3).classes("w-full gap-4")
 
         async def load_items():

@@ -2,6 +2,8 @@ from contextlib import contextmanager
 from nicegui import app, ui
 from frontend import state
 from frontend.state import clear_auth
+from frontend.components.header import create_header
+from frontend.components.footer import create_footer
 
 
 @contextmanager
@@ -20,13 +22,12 @@ def dashboard_frame(title: str):
         app.storage.user.clear()
         ui.navigate.to("/login")
 
-    with ui.header(elevated=True).classes("items-center justify-between bg-slate-700"):
-        with ui.row().classes("items-center"):
-            ui.button(on_click=lambda: left_drawer.toggle(), icon="menu").props(
-                "flat color=white"
-            )
-            ui.label(title).classes("text-h5")
+    left_drawer = ui.left_drawer(value=True, elevated=True).classes("bg-white")
 
+    # Render header from shared components
+    create_header(left_drawer, title)
+
+    # TODO: Extract into a reusable component
     with ui.left_drawer(value=True, elevated=True).classes("bg-white") as left_drawer:
         with ui.column().classes("w-full h-full flex flex-col justify-between no-wrap"):
             with ui.list().classes("w-full"):
@@ -66,7 +67,5 @@ def dashboard_frame(title: str):
     with ui.column().classes("w-full p-4 md:p-8 items-center"):
         yield
 
-    with ui.footer(elevated=True).classes(
-        "bg-slate-700 text-white items-center justify-center p-4"
-    ):
-        ui.label("© 2025 MyApp Name. All rights reserved.")
+    # Render header from shared components
+    create_footer()

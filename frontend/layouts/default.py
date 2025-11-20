@@ -67,5 +67,5 @@ def dashboard_frame(title: str):
     with ui.column().classes("w-full p-4 md:p-8 items-center"):
         yield
 
-    # Render header from shared components
+    # Render footer from shared components
     create_footer()

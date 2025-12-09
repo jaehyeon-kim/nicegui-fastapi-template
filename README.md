@@ -37,11 +37,48 @@ Follow these instructions to get the project running on your local machine.
 1.  **Clone the Repository**
 
     ```bash
-    git clone https://github.com/jaehyeon-kim/nicegui-fastapi-demo.git
+    git clone https://github.com/jaehyeon-kim/nicegui-fastapi-template.git
     cd nicegui-fastapi-demo
     ```
 
-2.  **Create and Activate a Virtual Environment**
+2.  **Create a Virtual Environment and Install Dependencies**
+
+    Choose one of the following methods:
+
+    #### Option A: Using `uv`
+
+    a. **Install `uv` (if you haven't already)**
+
+    ```bash
+    # On macOS/Linux
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+
+    # On Windows
+    irm https://astral.sh/uv/install.ps1 | iex
+    ```
+
+    b. **Create and Activate a Virtual Environment**
+
+    ```bash
+    # Create the virtual environment
+    uv venv venv
+
+    # Activate it (on macOS/Linux)
+    source venv/bin/activate
+
+    # Or activate it (on Windows)
+    venv\Scripts\activate
+    ```
+
+    c. **Install Dependencies**
+
+    ```bash
+    uv pip install -r requirements.txt
+    ```
+
+    #### Option B: Using `pip`
+
+    a. **Create and Activate a Virtual Environment**
 
     ```bash
     # Create the virtual environment
@@ -54,13 +91,13 @@ Follow these instructions to get the project running on your local machine.
     .\venv\Scripts\activate
     ```
 
-3.  **Install Dependencies**
+    b. **Install Dependencies**
 
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Configure Environment Variables**
+3.  **Configure Environment Variables**
     Create a `.env` file in the project root by copying the example file.
 
     ```bash
@@ -69,14 +106,14 @@ Follow these instructions to get the project running on your local machine.
 
     You can modify the `.env` file if needed, but the default values are configured to work with the Docker Compose setup.
 
-5.  **Start the PostgreSQL Database**
+4.  **Start the PostgreSQL Database**
     Run the following command to start the PostgreSQL database container in the background.
 
     ```bash
     docker-compose up -d
     ```
 
-6.  **Run the Application**
+5.  **Run the Application**
     Start the development server using Uvicorn. The `--reload` flag will automatically restart the server when you make code changes.
     ```bash
     uvicorn backend.main:app --reload
@@ -104,7 +141,7 @@ Once the server is running, you can access the following URLs:
 
 ![](./images/redoc.png)
 
-## Stopping and Cleaning Up
+### Stopping and Cleaning Up
 
 When you are finished, you can stop the services and clean up the environment.
 

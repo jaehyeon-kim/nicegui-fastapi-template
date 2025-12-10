@@ -1,10 +1,21 @@
+from fastapi import HTTPException
 from typing import Optional
 from sqlmodel import Session, select
-from backend.core.security import get_password_hash, verify_password
-from backend.models.models import User, UserCreate
+from src.core.security import get_password_hash, verify_password
+from src.models.models import User, UserCreate
 
 
 class UserRepository:
+    def register(self, db: Session, *, obj_in: UserCreate) -> User:
+        """Creates a new user if the email is not already in use."""
+        user = self.get_by_email(db, email=obj_in.email)
+        if user:
+            raise HTTPException(
+                status_code=409,  # 409 Conflict is often more appropriate here
+                detail="A user with this email already exists.",
+            )
+        return self.create(db, obj_in=obj_in)
+
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         """Finds and returns a user by their email address."""
         return db.exec(select(User).where(User.email == email)).first()
@@ -27,7 +38,9 @@ class UserRepository:
         """Validates a user's credentials by checking their email and verifying their password."""
         user = self.get_by_email(db, email=email)
         if not user or not verify_password(password, user.hashed_password):
-            return None
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        elif not user.is_active:
+            raise HTTPException(status_code=400, detail="Inactive user")
         return user
 
 

@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlmodel import Field, Relationship, SQLModel
 
-from backend.core.config import settings
+from src.core.config import settings
 
 TABLE_ARGS = {"schema": settings.SCHEMA_NAME}
 

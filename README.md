@@ -98,6 +98,7 @@ Follow these instructions to get the project running on your local machine.
     ```
 
 3.  **Configure Environment Variables**
+
     Create a `.env` file in the project root by copying the example file.
 
     ```bash
@@ -107,6 +108,7 @@ Follow these instructions to get the project running on your local machine.
     You can modify the `.env` file if needed, but the default values are configured to work with the Docker Compose setup.
 
 4.  **Start the PostgreSQL Database**
+
     Run the following command to start the PostgreSQL database container in the background.
 
     ```bash
@@ -114,10 +116,13 @@ Follow these instructions to get the project running on your local machine.
     ```
 
 5.  **Run the Application**
-    Start the development server using Uvicorn. The `--reload` flag will automatically restart the server when you make code changes.
+    Start the development server by executing the `app.py` script directly from your terminal.
+
     ```bash
-    uvicorn backend.main:app --reload
+    python app.py
     ```
+
+    This command calls the `ui.run()` function at the bottom of the script, which starts the web server. Because the `reload=True` parameter is used, the server will automatically restart whenever you make code changes.
 
 ### Accessing the Application
 
@@ -146,7 +151,7 @@ Once the server is running, you can access the following URLs:
 When you are finished, you can stop the services and clean up the environment.
 
 1.  **Stop the Uvicorn Server**
-    Press `Ctrl+C` in the terminal where the `uvicorn` command is running.
+    Press `Ctrl+C` in the terminal where the application is running.
 
 2.  **Stop the Database Container**
     To stop the PostgreSQL container, run:

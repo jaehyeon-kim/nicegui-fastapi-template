@@ -1,9 +1,9 @@
 from contextlib import contextmanager
 from nicegui import app, ui
-from frontend import state
-from frontend.state import clear_auth
-from frontend.components.header import create_header
-from frontend.components.footer import create_footer
+from src.frontend import state
+from src.frontend.state import clear_auth
+from src.frontend.components.header import create_header
+from src.frontend.components.footer import create_footer
 
 
 @contextmanager

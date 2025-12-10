@@ -1,9 +1,12 @@
-import httpx
+from fastapi import HTTPException
 from nicegui import app, ui
-from frontend import state
-from frontend.layouts.default import dashboard_frame
-from frontend.components.form_helpers import enable_button_on_user_inputs
-from frontend.components import notifications
+from src.models import UserCreate
+from src.db.session import get_db_context
+from src.repositories.user import user_repo
+from src.frontend.layouts.default import dashboard_frame
+from src.frontend.components.auth_utils import get_current_user_from_state
+from src.frontend.components.form_utils import enable_button_on_user_inputs
+from src.frontend.components import notifications
 
 
 @ui.page("/users/create")
@@ -60,26 +63,25 @@ async def create_user(
     email_input: ui.input, password_input: ui.input, is_superuser_checkbox: ui.checkbox
 ):
     """Creates a new user using data from the input elements."""
-    token = state.get_token()
-    if not token:
-        return
-    data = {
-        "email": email_input.value,
-        "password": password_input.value,
-        "is_superuser": is_superuser_checkbox.value,
-    }
-    headers = {"Authorization": token}
     try:
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "http://localhost:8000/api/v1/user/", json=data, headers=headers
+        with get_db_context() as db:
+            current_user = get_current_user_from_state(db)
+            if not current_user.is_superuser:
+                raise HTTPException(
+                    status_code=403, detail="You do not have enough privileges."
+                )
+            user_in = UserCreate(
+                email=email_input.value,
+                password=password_input.value,
+                is_superuser=is_superuser_checkbox.value,
             )
-        if response.status_code == 200:
-            notifications.show_success(f"User {email_input.value} created!")
-            email_input.value = ""
-            password_input.value = ""
-            is_superuser_checkbox.value = False
-        else:
-            notifications.show_error(response.json().get("detail"))
-    except httpx.RequestError:
-        notifications.show_error("Could not connect to backend.")
+            user_repo.register(db=db, obj_in=user_in)
+
+        notifications.show_success(f"User '{email_input.value}' created successfully!")
+        email_input.value = ""
+        password_input.value = ""
+        is_superuser_checkbox.value = False
+    except HTTPException as e:
+        notifications.show_error(e.detail)
+    except Exception as e:
+        notifications.show_error(f"An unexpected error occurred: {e}")

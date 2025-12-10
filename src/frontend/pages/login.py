@@ -1,8 +1,11 @@
-import httpx
+from fastapi import HTTPException
 from nicegui import app, ui
-from frontend import state
-from frontend.components.form_helpers import enable_button_on_user_inputs
-from frontend.components import notifications
+from src.repositories.user import user_repo
+from src.core import security
+from src.db.session import get_db_context
+from src.frontend import state
+from src.frontend.components.form_utils import enable_button_on_user_inputs
+from src.frontend.components import notifications
 
 
 @ui.page("/login")
@@ -46,16 +49,19 @@ async def perform_login(email_input: ui.input, password_input: ui.input):
     """Sends user credentials to the backend."""
     if not email_input.validate() or not password_input.validate():
         return
-    data = {"username": email_input.value, "password": password_input.value}
     try:
-        url = "http://localhost:8000/login/access-token"
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, data=data)
-        if response.status_code == 200:
-            state.set_auth(response.json())
-            app.storage.user["is_superuser"] = email_input.value == "admin@example.com"
+        with get_db_context() as db:
+            user = user_repo.authenticate(
+                db=db, email=email_input.value, password=password_input.value
+            )
+            auth_data = {
+                "access_token": security.create_access_token(user.id),
+                "token_type": "bearer",
+            }
+            state.set_auth(auth_data)
+            app.storage.user["is_superuser"] = user.is_superuser
             ui.navigate.to("/items")
-        else:
-            notifications.show_error(response.json().get("detail", "Login failed."))
-    except httpx.RequestError:
-        notifications.show_error("Could not connect to the backend.")
+    except HTTPException as e:
+        notifications.show_error(e.detail)
+    except Exception as e:
+        notifications.show_error(f"An unexpected error occurred: {e}")

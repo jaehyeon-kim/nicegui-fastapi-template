@@ -9,4 +9,3 @@ bcrypt==3.2.0
 pydantic[email]==2.12.4
 pydantic-settings==2.12.0
 python-multipart==0.0.20
-httpx==0.28.1

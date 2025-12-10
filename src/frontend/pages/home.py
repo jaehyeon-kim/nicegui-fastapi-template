@@ -1,5 +1,5 @@
 from nicegui import ui
-from frontend import state
+from src.frontend import state
 
 
 @ui.page("/")

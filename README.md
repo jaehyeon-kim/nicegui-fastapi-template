@@ -22,6 +22,20 @@ This combination is perfect for **demo applications** because it enables a singl
 - **Automatic API Docs**: Interactive API documentation available out-of-the-box.
 - **Containerized DB**: Easy-to-manage PostgreSQL instance running in Docker.
 
+💡 **Version 2.0: Unified Application Architecture**
+
+The initial version was designed with a distinct separation between a FastAPI backend and a NiceGUI frontend, which communicated over HTTP. This new version consolidates the application, leveraging the fact that NiceGUI is built on top of FastAPI. The result is a more tightly integrated structure that allows the UI and API logic to coexist in the same process.
+
+**Key Architectural Changes:**
+
+- **Single FastAPI Instance:** The separate FastAPI server process has been removed. The application now operates on the single FastAPI instance provided by `nicegui.app`.
+- **Direct Function Calls:** UI event handlers no longer make HTTP requests (`httpx`) to the backend. They now import and call the necessary Python functions from the repository layer directly, removing the network layer for UI-to-backend communication.
+- **Preserved API Endpoints:** The original API, intended for external clients, is maintained. It is mounted using FastAPI's `APIRouter` onto the main NiceGUI application, ensuring that JSON endpoints remain available.
+- **Consolidated Codebase:** The `frontend` and `backend` directories have been merged into a single application package (e.g., `app` or `src`). A `run.py` script at the project root now serves as the single entry point.
+- **Shared Logic:** Business logic, such as permission checks and database operations, has been centralized in the repository layer, where it is called by both the UI event handlers and the API endpoints.
+
+This updated architecture provides a more direct and cohesive way to build full-stack applications where the UI and backend logic are tightly coupled.
+
 ## Getting Started
 
 Follow these instructions to get the project running on your local machine.

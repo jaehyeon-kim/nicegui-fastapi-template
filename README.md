@@ -31,7 +31,7 @@ The initial version was designed with a distinct separation between a FastAPI ba
 - **Single FastAPI Instance:** The separate FastAPI server process has been removed. The application now operates on the single FastAPI instance provided by `nicegui.app`.
 - **Direct Function Calls:** UI event handlers no longer make HTTP requests (`httpx`) to the backend. They now import and call the necessary Python functions from the repository layer directly, removing the network layer for UI-to-backend communication.
 - **Preserved API Endpoints:** The original API, intended for external clients, is maintained. It is mounted using FastAPI's `APIRouter` onto the main NiceGUI application, ensuring that JSON endpoints remain available.
-- **Consolidated Codebase:** The `frontend` and `backend` directories have been merged into a single application package (e.g., `app` or `src`). A `run.py` script at the project root now serves as the single entry point.
+- **Consolidated Codebase:** The frontend and backend code now sits in one application package, `src`, as `src/frontend/` and `src/backend/`. An `app.py` script at the project root serves as the single entry point.
 - **Shared Logic:** Business logic, such as permission checks and database operations, has been centralized in the repository layer, where it is called by both the UI event handlers and the API endpoints.
 
 This updated architecture provides a more direct and cohesive way to build full-stack applications where the UI and backend logic are tightly coupled.
@@ -52,7 +52,7 @@ Follow these instructions to get the project running on your local machine.
 
     ```bash
     git clone https://github.com/jaehyeon-kim/nicegui-fastapi-template.git
-    cd nicegui-fastapi-demo
+    cd nicegui-fastapi-template
     ```
 
 2.  **Create a Virtual Environment and Install Dependencies**
@@ -113,10 +113,10 @@ Follow these instructions to get the project running on your local machine.
 
 3.  **Configure Environment Variables**
 
-    Create a `.env` file in the project root by copying the example file.
+    Create a `.env` file in the project root by copying the template file.
 
     ```bash
-    cp .env.example .env
+    cp .env.template .env
     ```
 
     You can modify the `.env` file if needed, but the default values are configured to work with the Docker Compose setup.
@@ -178,6 +178,10 @@ When you are finished, you can stop the services and clean up the environment.
     ```bash
     deactivate
     ```
+
+## Related reading
+
+- [Guide to Building Integrated Web Applications with FastAPI and NiceGUI](https://jaehyeon.me/blog/2025-11-19-fastapi-nicegui-template/): a walk through this template, showing how one Python application serves both the backend API and the frontend UI.
 
 ## License
 
